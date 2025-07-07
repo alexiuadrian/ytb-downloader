@@ -1,42 +1,11 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
-import requests
 import os
 import threading
 
-import subprocess
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
 
-# def download_file(url, path, progress_bar, status_label):
-#     try:
-#         status_label.config(text="Processing...")
-
-#         # yt-dlp command
-#         command = [
-#             "yt-dlp",
-#             "-f", "bestaudio",
-#             "--extract-audio",
-#             "--audio-format", "mp3",
-#             "--audio-quality", "0",
-#             "-o", os.path.join(path, "%(title)s.%(ext)s"),
-#             url
-#         ]
-
-#         # Run yt-dlp as subprocess
-#         process = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
-#         if process.returncode == 0:
-#             progress_bar["value"] = 100
-#             progress_bar.update()
-#             status_label.config(text="✅ Done")
-#         else:
-#             status_label.config(text="❌ Failed")
-#             print("Error:", process.stderr)
-
-#     except Exception as e:
-#         status_label.config(text=f"❌ Error")
-#         print("Exception:", e)
 
 def download_file(url, path, progress_bar, status_label):
     def progress_hook(d):
@@ -50,7 +19,7 @@ def download_file(url, path, progress_bar, status_label):
         elif d['status'] == 'finished':
             progress_bar["value"] = 100
             progress_bar.update()
-            status_label.config(text="✅ Converting...")
+            status_label.config(text="Converting...")
 
     ydl_opts = {
         'format': 'bestaudio',
@@ -69,9 +38,9 @@ def download_file(url, path, progress_bar, status_label):
         status_label.config(text="⏬ Downloading...")
         with YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
-        status_label.config(text="✅ Done")
+        status_label.config(text="Done")
     except DownloadError as e:
-        status_label.config(text="❌ Failed")
+        status_label.config(text="Failed")
         print(f"Download error for {url}: {e}")
 
 def start_downloads():
