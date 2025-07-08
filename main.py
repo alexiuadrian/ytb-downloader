@@ -46,6 +46,10 @@ def download_file(url, path, progress_bar, status_label):
 def start_downloads():
     urls = url_text.get("1.0", tk.END).strip().splitlines()
     path = path_entry.get()
+    paths_arr = []
+
+    for index in range(len(urls)):
+        paths_arr.append(path + os.sep + str(index + 1))
 
     if not urls or not path:
         messagebox.showwarning("Input Error", "Please provide both URLs and a download path.")
@@ -54,7 +58,8 @@ def start_downloads():
     for widget in progress_frame.winfo_children():
         widget.destroy()
 
-    for url in urls:
+    for index in range(len(urls)):
+        url = urls[index]
         frame = tk.Frame(progress_frame)
         frame.pack(fill='x', padx=5, pady=5)
 
@@ -67,7 +72,7 @@ def start_downloads():
         status = tk.Label(frame, text="Downloading...", width=15)
         status.pack(side='left')
 
-        thread = threading.Thread(target=download_file, args=(url, path, progress, status))
+        thread = threading.Thread(target=download_file, args=(url, paths_arr[index], progress, status))
         thread.start()
 
 def browse_path():
